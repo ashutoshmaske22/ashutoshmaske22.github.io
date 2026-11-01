@@ -3,30 +3,37 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../site.config';
 import { getPosts } from '../lib/posts';
 import { u } from '../lib/url';
+import Pipeline from '../components/Pipeline.astro';
+import Icon from '../components/Icon.astro';
+import ProjectArt from '../components/ProjectArt.astro';
 
 const posts = (await getPosts()).slice(0, 3);
 
 const skills = [
   {
     tag: 'delivery',
+    icon: 'delivery' as const,
     title: 'CI/CD & GitOps',
     text: 'Pipelines that build, test, scan and deploy on every merge, with rollbacks that take one step.',
     chips: ['GitHub Actions', 'GitLab CI', 'Docker'],
   },
   {
     tag: 'infrastructure',
+    icon: 'infrastructure' as const,
     title: 'Infrastructure as code',
     text: 'Servers and cloud resources described in code and reviewed like code.',
     chips: ['Terraform', 'Ansible', 'AWS', 'Linux'],
   },
   {
     tag: 'data',
+    icon: 'data' as const,
     title: 'Databases & backups',
     text: 'Repeatable database deployments, and backups that are tested by actually restoring them.',
     chips: ['PostgreSQL', 'Vector DBs', 'Bash'],
   },
   {
     tag: 'ai platform',
+    icon: 'ai' as const,
     title: 'LLMOps & AIOps',
     text: 'Running self-hosted language models and using automation to cut alert noise.',
     chips: ['Ollama', 'Open WebUI', 'Prometheus'],
@@ -35,6 +42,7 @@ const skills = [
 
 const projects = [
   {
+    art: 'website' as const,
     meta: ['Personal project', 'Platform'],
     title: 'This website',
     text: 'A static site built with Astro, checked by a CI pipeline on every pull request and deployed automatically when changes reach main.',
@@ -44,6 +52,7 @@ const projects = [
     linkText: 'How it works →',
   },
   {
+    art: 'restore' as const,
     meta: ['Write-up', 'Databases'],
     title: 'PostgreSQL restore test',
     text: 'A small script that restores the latest backup into a scratch database on a schedule and fails loudly if the data is missing.',
@@ -95,6 +104,7 @@ const projects = [
       <div class="services">
         {skills.map((s) => (
           <div class="svc">
+            <Icon name={s.icon} />
             <span class="tag">{s.tag}</span>
             <h3>{s.title}</h3>
             <p>{s.text}</p>
@@ -102,6 +112,19 @@ const projects = [
           </div>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="label">// how i ship</div>
+        <div>
+          <h2>From commit to live</h2>
+          <p>The same habits I use at work, applied to this site: small changes, automated checks, and a deploy nobody has to do by hand.</p>
+        </div>
+      </div>
+      <Pipeline />
     </div>
   </section>
 
@@ -117,7 +140,7 @@ const projects = [
       <div class="cases">
         {projects.map((p) => (
           <article class="case">
-            <div class="meta">{p.meta.map((m) => <span>{m}</span>)}</div>
+            <div class="meta"><ProjectArt name={p.art} />{p.meta.map((m) => <span>{m}</span>)}</div>
             <div><h3>{p.title}</h3><p>{p.text}</p></div>
             <dl class="kv">
               <dt>Stack</dt><dd>{p.stack}</dd>
