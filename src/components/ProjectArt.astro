@@ -1,0 +1,65 @@
+---
+// Small illustrations for the project rows.
+interface Props { name: 'website' | 'restore' }
+const { name } = Astro.props;
+---
+<div class="art" aria-hidden="true">
+  {name === 'website' && (
+    <svg viewBox="0 0 200 120">
+      <rect x="10" y="10" width="180" height="100" rx="6" class="frame" />
+      <path d="M10 26h180" class="line" />
+      <circle cx="22" cy="18" r="2.5" class="dot-r" />
+      <circle cx="31" cy="18" r="2.5" class="dot-a" />
+      <circle cx="40" cy="18" r="2.5" class="dot-g" />
+      <rect x="24" y="38" width="70" height="8" rx="2" class="fill-fg" />
+      <rect x="24" y="52" width="50" height="8" rx="2" class="fill-accent" />
+      <rect x="24" y="68" width="80" height="4" rx="2" class="fill-muted" />
+      <rect x="24" y="77" width="64" height="4" rx="2" class="fill-muted" />
+      <rect x="118" y="38" width="58" height="52" rx="4" class="panel" />
+      <path d="M126 50h20M126 58h32M126 66h26M126 74h14" class="code" />
+      <path d="M126 82l4 4 8-8" class="ok" />
+    </svg>
+  )}
+  {name === 'restore' && (
+    <svg viewBox="0 0 200 120">
+      <g class="db">
+        <ellipse cx="45" cy="34" rx="25" ry="8" />
+        <path d="M20 34v44c0 4.4 11.2 8 25 8s25-3.6 25-8V34" />
+        <path d="M20 56c0 4.4 11.2 8 25 8s25-3.6 25-8" />
+      </g>
+      <text x="45" y="104" text-anchor="middle" class="lbl">prod</text>
+      <path d="M78 60h36" class="flow" />
+      <path d="M108 54l7 6-7 6" class="arrow" />
+      <text x="96" y="50" text-anchor="middle" class="lbl">restore</text>
+      <g class="db scratch">
+        <ellipse cx="152" cy="34" rx="25" ry="8" />
+        <path d="M127 34v44c0 4.4 11.2 8 25 8s25-3.6 25-8V34" />
+        <path d="M127 56c0 4.4 11.2 8 25 8s25-3.6 25-8" />
+      </g>
+      <circle cx="170" cy="78" r="10" class="badge" />
+      <path d="M165.5 78l3 3 6-6" class="ok" />
+      <text x="152" y="104" text-anchor="middle" class="lbl">scratch</text>
+    </svg>
+  )}
+</div>
+
+<style>
+  .art { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); max-width: 220px; }
+  .art svg { display: block; width: 100%; height: auto; }
+  .frame { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+  .line { stroke: var(--line); stroke-width: 1.5; }
+  .panel { fill: var(--panel); stroke: var(--line); }
+  .dot-r { fill: var(--warn); } .dot-a { fill: var(--accent); } .dot-g { fill: var(--ok); }
+  .fill-fg { fill: var(--fg); opacity: .85; }
+  .fill-accent { fill: var(--accent); }
+  .fill-muted { fill: var(--muted); opacity: .5; }
+  .code { stroke: var(--muted); stroke-width: 3; stroke-linecap: round; opacity: .6; }
+  .ok { fill: none; stroke: var(--ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .db { fill: none; stroke: var(--fg); stroke-width: 1.6; opacity: .85; }
+  .db.scratch { stroke: var(--accent); stroke-dasharray: 4 3; opacity: 1; }
+  .badge { fill: var(--bg); stroke: var(--ok); stroke-width: 1.6; }
+  .flow { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 5; animation: art-flow 1s linear infinite; }
+  .arrow { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lbl { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+  @keyframes art-flow { to { stroke-dashoffset: -10; } }
+</style>

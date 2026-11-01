@@ -1,0 +1,62 @@
+---
+// Animated CI/CD pipeline: push → build → audit → deploy → live.
+// Pure SVG + CSS. A "packet" travels along the line; each stage lights up as it passes.
+const stages = [
+  { label: 'git push', sub: 'branch / PR' },
+  { label: 'build', sub: 'npm ci · astro' },
+  { label: 'audit', sub: 'npm audit' },
+  { label: 'deploy', sub: 'GitHub Pages' },
+  { label: 'live', sub: 'CDN · HTTPS' },
+];
+const x0 = 70;
+const gap = 155;
+---
+<figure class="pipe">
+  <div class="pipe-scroll">
+    <svg viewBox="0 0 760 170" role="img" aria-labelledby="pipe-t pipe-d">
+      <title id="pipe-t">Deployment pipeline</title>
+      <desc id="pipe-d">Code goes from git push, through build and security audit, to deploy on GitHub Pages and the live site.</desc>
+      <line class="pipe-track" x1={x0} y1="66" x2={x0 + gap * 4} y2="66" />
+      <line class="pipe-flow" x1={x0} y1="66" x2={x0 + gap * 4} y2="66" />
+      {stages.map((s, i) => (
+        <g class={`pipe-stage s${i}`} transform={`translate(${x0 + gap * i} 66)`}>
+          <circle class="pipe-ring" r="22" />
+          <circle class="pipe-core" r="7" />
+          <text class="pipe-label" y="52" text-anchor="middle">{s.label}</text>
+          <text class="pipe-sub" y="72" text-anchor="middle">{s.sub}</text>
+        </g>
+      ))}
+      <circle class="pipe-packet" r="5" cy="66" cx={x0} />
+    </svg>
+  </div>
+  <figcaption>Every change to this site runs through this pipeline. A failed check stops it before it goes live.</figcaption>
+</figure>
+
+<style>
+  .pipe { margin: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 20px 16px 16px; }
+  .pipe-scroll { overflow-x: auto; }
+  .pipe svg { display: block; width: 100%; min-width: 560px; height: auto; }
+  .pipe figcaption { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .pipe-track { stroke: var(--line); stroke-width: 2; }
+  .pipe-flow { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 10; opacity: .55; animation: pipe-dash 1.2s linear infinite; }
+  .pipe-ring { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+  .pipe-core { fill: var(--muted); }
+  .pipe-label { font-family: var(--f-mono); font-size: 14px; fill: var(--fg); }
+  .pipe-sub { font-family: var(--f-mono); font-size: 11px; fill: var(--muted); }
+  .s4 .pipe-core { fill: var(--ok); }
+  .s4 .pipe-ring { stroke: var(--ok); }
+  .pipe-packet { fill: var(--accent); animation: pipe-move 5s cubic-bezier(.6,0,.4,1) infinite; }
+  .pipe-stage .pipe-core { animation: pipe-light 5s infinite; }
+  .s0 .pipe-core { animation-delay: 0s; }
+  .s1 .pipe-core { animation-delay: .9s; }
+  .s2 .pipe-core { animation-delay: 1.8s; }
+  .s3 .pipe-core { animation-delay: 2.7s; }
+  .s4 .pipe-core { animation: none; }
+  @keyframes pipe-dash { to { stroke-dashoffset: -16; } }
+  @keyframes pipe-move { 0% { transform: translateX(0); opacity: 0; } 5% { opacity: 1; } 80% { transform: translateX(620px); opacity: 1; } 100% { transform: translateX(620px); opacity: 0; } }
+  @keyframes pipe-light { 0%, 100% { fill: var(--muted); } 4%, 14% { fill: var(--accent); } 24% { fill: var(--muted); } }
+  @media (prefers-reduced-motion: reduce) {
+    .pipe-flow, .pipe-packet, .pipe-stage .pipe-core { animation: none; }
+    .pipe-packet { display: none; }
+  }
+</style>
