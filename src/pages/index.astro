@@ -1,0 +1,216 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site.config';
+import { getPosts } from '../lib/posts';
+import { u } from '../lib/url';
+
+const posts = (await getPosts()).slice(0, 3);
+
+const skills = [
+  {
+    tag: 'delivery',
+    title: 'CI/CD & GitOps',
+    text: 'Pipelines that build, test, scan and deploy on every merge, with rollbacks that take one step.',
+    chips: ['GitHub Actions', 'GitLab CI', 'Docker'],
+  },
+  {
+    tag: 'infrastructure',
+    title: 'Infrastructure as code',
+    text: 'Servers and cloud resources described in code and reviewed like code.',
+    chips: ['Terraform', 'Ansible', 'AWS', 'Linux'],
+  },
+  {
+    tag: 'data',
+    title: 'Databases & backups',
+    text: 'Repeatable database deployments, and backups that are tested by actually restoring them.',
+    chips: ['PostgreSQL', 'Vector DBs', 'Bash'],
+  },
+  {
+    tag: 'ai platform',
+    title: 'LLMOps & AIOps',
+    text: 'Running self-hosted language models and using automation to cut alert noise.',
+    chips: ['Ollama', 'Open WebUI', 'Prometheus'],
+  },
+];
+
+const projects = [
+  {
+    meta: ['Personal project', 'Platform'],
+    title: 'This website',
+    text: 'A static site built with Astro, checked by a CI pipeline on every pull request and deployed automatically when changes reach main.',
+    stack: 'Astro, GitHub Actions, GitHub Pages, Dependabot',
+    source: 'https://github.com/ashutoshmaske22/ashutoshmaske22.github.io',
+    link: u('/blog/how-this-site-runs/'),
+    linkText: 'How it works →',
+  },
+  {
+    meta: ['Write-up', 'Databases'],
+    title: 'PostgreSQL restore test',
+    text: 'A small script that restores the latest backup into a scratch database on a schedule and fails loudly if the data is missing.',
+    stack: 'PostgreSQL, Bash, cron',
+    link: u('/blog/restore-test-postgres/'),
+    linkText: 'Read the post →',
+  },
+];
+---
+<Base>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <span class="avail"><span class="dot"></span> DevOps & AIOps engineer · {SITE.location}</span>
+        <h1>Notes on infrastructure that <em>stays up</em> at 3 a.m.</h1>
+        <p class="lede">
+          I'm Ashutosh. I work on deployment automation, databases and self-hosted LLM platforms.
+          This is where I write down what I learn and share small projects.
+        </p>
+        <div class="ctas">
+          <a class="btn" href={u('/blog/')}>Read the notes</a>
+          <a class="btn ghost" href="#projects">See projects</a>
+          <a class="btn ghost" href={SITE.github} target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="console" aria-label="Example incident timeline">
+        <div class="bar"><span>example incident · lab</span><span class="res">● resolved</span></div>
+<pre><span class="t">02:58:11</span> <span class="fire">FIRING</span>  pg_replication_lag &gt; 30s
+<span class="t">02:58:14</span> <span class="amb">triage</span>  anomaly matched: vacuum stall
+<span class="t">02:58:40</span> <span class="amb">runbook</span> rb-db-07 · kill blocking pid
+<span class="t">02:59:02</span> <span class="amb">verify</span>  lag 31s → 4s → 0.8s
+<span class="t">02:59:05</span> <span class="res">RESOLVED</span> MTTR 54s · no page sent
+<span class="t">02:59:06</span> <span class="t">postmortem draft → #ops</span>
+
+<span class="amb">$</span> <span class="cursor"></span></pre>
+      </div>
+    </div>
+  </div>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="label">// skills</div>
+        <div>
+          <h2>What I work with</h2>
+          <p>The areas I spend most of my time in, and the tools I reach for.</p>
+        </div>
+      </div>
+      <div class="services">
+        {skills.map((s) => (
+          <div class="svc">
+            <span class="tag">{s.tag}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+            <div class="chips">{s.chips.map((c) => <span class="chip">{c}</span>)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="label">// projects</div>
+        <div>
+          <h2>Personal projects</h2>
+          <p>Things I build and document in my own time.</p>
+        </div>
+      </div>
+      <div class="cases">
+        {projects.map((p) => (
+          <article class="case">
+            <div class="meta">{p.meta.map((m) => <span>{m}</span>)}</div>
+            <div><h3>{p.title}</h3><p>{p.text}</p></div>
+            <dl class="kv">
+              <dt>Stack</dt><dd>{p.stack}</dd>
+              <dt>More</dt><dd><a href={p.link}>{p.linkText}</a></dd>
+              {p.source && (<><dt>Code</dt><dd><a href={p.source} target="_blank" rel="noopener">Source on GitHub ↗</a></dd></>)}
+            </dl>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="label">// about</div>
+        <div><h2>About me</h2></div>
+      </div>
+      <div class="about">
+        <div class="bio">
+          <p>I'm a <strong>DevOps and AIOps engineer</strong> based in Pune. My day-to-day work covers deployment automation, server configuration, backups and infrastructure for AI tools.</p>
+          <p>Earlier I worked at <strong>Colpari GmbH in Leipzig</strong>, Germany, with teams spread across time zones.</p>
+          <p>Outside work I run small experiments and write them up here. Opinions on this site are my own.</p>
+        </div>
+        <ol class="timeline">
+          <li class="now">
+            <div class="when">present</div>
+            <div class="role">DevOps & AIOps Engineer</div>
+            <p>Automation, databases, LLM infrastructure.</p>
+          </li>
+          <li>
+            <div class="when">earlier</div>
+            <div class="role">Colpari GmbH · Leipzig, DE</div>
+            <p>Infrastructure and operations work.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="label">// writing</div>
+        <div><h2>Notes from practice</h2><p>Practical write-ups on DevOps and AIOps problems. <a href={u('/blog/')}>All posts →</a></p></div>
+      </div>
+      <div class="posts">
+        {posts.map((p) => (
+          <a class="post" href={p.url}>
+            <div class="pm"><span>{p.tag}</span><span class="status">{p.dateLabel}</span></div>
+            <h3>{p.title}</h3>
+            <p>{p.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div class="side">
+          <div class="label">// contact</div>
+          <h2 style="margin-top:12px">Say hello</h2>
+          <p>Questions about a post, or spotted a mistake? Send me an email.</p>
+        </div>
+        <div class="side">
+          <div class="mailrow">
+            <span class="mail" id="mail">{SITE.email}</span>
+            <button class="btn ghost" type="button" id="copy">Copy email</button>
+          </div>
+          <div class="mailrow">
+            <a class="btn ghost" href={SITE.github} target="_blank" rel="noopener">GitHub profile ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const btn = document.getElementById('copy');
+  const mail = document.getElementById('mail');
+  btn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(mail?.textContent ?? '');
+      btn.textContent = 'Copied';
+      setTimeout(() => (btn.textContent = 'Copy email'), 1600);
+    } catch {
+      const r = document.createRange();
+      if (mail) r.selectNodeContents(mail);
+      getSelection()?.removeAllRanges();
+      getSelection()?.addRange(r);
+    }
+  });
+</script>
